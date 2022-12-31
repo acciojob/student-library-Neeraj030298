@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class Card {
 
     @Id

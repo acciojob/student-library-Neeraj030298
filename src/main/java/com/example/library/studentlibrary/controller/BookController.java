@@ -17,7 +17,7 @@ public class BookController {
 
 @Autowired
         BookService bookService;
-PostMapping("/create/")
+@PostMapping("/create/")
     public ResponseEntity<String> createBook(@RequestParam(required = true) Book book)
     {
         bookService.createBook(book);

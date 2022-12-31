@@ -50,11 +50,9 @@ public class TransactionService {
         if (bookRepository5.existsById(bookId) && bookRepository5.findById(bookId).get().isAvailable()) ;
         else {
             throw new Exception("Book is either unavailable or not present");
-            break;
         }
         if (!cardRepository5.existsById(cardId)) {
             throw new Exception("Card is invalid");
-            break;
         }
         List<Book> books = bookRepository5.findAll();
         int count =0;
@@ -64,23 +62,22 @@ public class TransactionService {
         }
         if(count>= max_allowed_books) {
             throw new Exception("Book limit has reached for this card");
-            break;
         }
         bookRepository5.findById(bookId).get().setAvailable(false);
-        bookRepository5.findById(bookId).get().setCard(cardRepository5.findById());
+       // bookRepository5.findById(bookId).get().setCard(cardRepository5.findById(cardId));
         Transaction t1 = new Transaction();
-        t1.setTransactionStatus(TransactionStatus.SUCCESSFUL);
-        t1.setBook(bookRepository5.findAll(bookId));
+       // t1.setTransactionStatus(TransactionStatus.SUCCESSFUL);
+      //  t1.setBook(bookRepository5.findAll(bookId));
         transactionRepository5.save(t1);
-    }
+     return "";}
 
     public Transaction returnBook(int cardId, int bookId) throws Exception{
 
         List<Transaction> transactions = transactionRepository5.find(cardId, bookId,TransactionStatus.SUCCESSFUL, true);
         Transaction transaction = transactions.get(transactions.size() - 1);
         Transaction t1 = new Transaction();
-        if(t1.getTransactionDate()>getMax_allowed_days)
-        t1.fineAmount =(t1.getTransactionDate()-getMax_allowed_days)*fine_per_day;
+       // if(t1.getTransactionDate()>getMax_allowed_days)
+      //  t1.fineAmount =(t1.getTransactionDate()-getMax_allowed_days)*fine_per_day;
         bookRepository5.findById(bookId).get().setAvailable(true);
         transactionRepository5.save(t1);
 

@@ -1,14 +1,13 @@
 package com.example.library.studentlibrary.services;
 
-import com.example.library.studentlibrary.models.Card;
 import com.example.library.studentlibrary.models.CardStatus;
 import com.example.library.studentlibrary.models.Student;
 import com.example.library.studentlibrary.repositories.CardRepository;
 import com.example.library.studentlibrary.repositories.StudentRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -23,13 +22,13 @@ public class StudentService {
     CardRepository cardrepository;
 
     public Student getDetailsByEmail(String email){
-        Student student = studentRepository4.findByEmailId(id);
+        Student student = studentRepository4.findByEmailId(email);
 
         return student;
     }
 
-    public Student getDetailsById(int id){
-        Student student = studentRepository4.findById(id);
+    public Optional<Student> getDetailsById(int id){
+        Optional<Student> student = studentRepository4.findById(id);
 
         return student;
     }
