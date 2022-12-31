@@ -46,19 +46,49 @@ public class TransactionService {
 
         //Note that the error message should match exactly in all cases
 
-       return null; //return transactionId instead
+       // return null; //return transactionId instead
+        if (bookRepository5.existsById(bookId) && bookRepository5.findById(bookId).get().isAvailable()) ;
+        else {
+            throw new Exception("Book is either unavailable or not present");
+            break;
+        }
+        if (!cardRepository5.existsById(cardId)) {
+            throw new Exception("Card is invalid");
+            break;
+        }
+        List<Book> books = bookRepository5.findAll();
+        int count =0;
+        for(Book b : books)
+        {
+            if(b.getCard().getId()== cardId) count = count + 1;
+        }
+        if(count>= max_allowed_books) {
+            throw new Exception("Book limit has reached for this card");
+            break;
+        }
+        bookRepository5.findById(bookId).get().setAvailable(false);
+        bookRepository5.findById(bookId).get().setCard(cardRepository5.findById());
+        Transaction t1 = new Transaction();
+        t1.setTransactionStatus(TransactionStatus.SUCCESSFUL);
+        t1.setBook(bookRepository5.findAll(bookId));
+        transactionRepository5.save(t1);
     }
 
     public Transaction returnBook(int cardId, int bookId) throws Exception{
 
         List<Transaction> transactions = transactionRepository5.find(cardId, bookId,TransactionStatus.SUCCESSFUL, true);
         Transaction transaction = transactions.get(transactions.size() - 1);
+        Transaction t1 = new Transaction();
+        if(t1.getTransactionDate()>getMax_allowed_days)
+        t1.fineAmount =(t1.getTransactionDate()-getMax_allowed_days)*fine_per_day;
+        bookRepository5.findById(bookId).get().setAvailable(true);
+        transactionRepository5.save(t1);
 
         //for the given transaction calculate the fine amount considering the book has been returned exactly when this function is called
         //make the book available for other users
         //make a new transaction for return book which contains the fine amount as well
 
         Transaction returnBookTransaction  = null;
-        return returnBookTransaction; //return the transaction after updating all details
+        return t1; //return the transaction after updating all details
     }
 }
